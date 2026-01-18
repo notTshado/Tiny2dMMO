@@ -38,8 +38,8 @@ void Server::tick() {
 	for (int i = 1; i <= numplayers; i++) {
 		InputPacket input{};
 		input.playerid = i;
-		input.movex = static_cast<float>((std::rand() % 21) - 10); // Random move between -10 and 10
-		input.movey = static_cast<float>((std::rand() % 21) - 10); 
+		input.movex = static_cast<float>((std::rand() % 201) - 100); /// Random start position between -100 and 100
+		input.movey = static_cast<float>((std::rand() % 201) - 100); 
 		jessicaalba.applyinput(input);
 	}
 
