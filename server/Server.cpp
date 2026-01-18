@@ -5,45 +5,49 @@
 #include <cstdlib>
 #include <ctime>
 
+
+int numplayers = 2;
+
+
 void Server::run() {
+	
+	std::cout << "Enter number of players to simulate (up to 50):";
+	std::cin >> numplayers;
+if (numplayers < 2)
+	numplayers = 2;
+	if (numplayers > 50)
+		numplayers = 50;
+
+for (int i = 1; i <= numplayers; i++) {
+		InputPacket startPackets{};
+		startPackets.playerid = i;
+		startPackets.movex = static_cast<float>((std::rand() % 201) - 100); // Random start position between -100 and 100
+		startPackets.movey = static_cast<float>((std::rand() % 201) - 100); 
+		jessicaalba.applyinput(startPackets); // Initialize player positions
+}
 	std::srand(std::time(nullptr)); // seed random number generator
 	while (true) {
 		tick();
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // 1 tick per second
 	}
-	}
+}
 
 void Server::tick() {
 	tickcount++;
 	//simulate receiving an input packet
-	InputPacket input{};
-	input.playerid = 1; 
-	input.movex = static_cast<float>(std::rand() % 21 - 10); //random value between -10 and 10
-	input.movey = static_cast<float>(std::rand() % 21 - 10);
+	for (int i = 1; i <= numplayers; i++) {
+		InputPacket input{};
+		input.playerid = i;
+		input.movex = static_cast<float>((std::rand() % 21) - 10); // Random move between -10 and 10
+		input.movey = static_cast<float>((std::rand() % 21) - 10); 
+		jessicaalba.applyinput(input);
+	}
 
-	jessicaalba.applyinput(input);
-	
-	input.playerid = 2;
-	input.movex = static_cast<float>(std::rand() % 21 - 10);
-
-	jessicaalba.applyinput(input);
-
-
-	
 jessicaalba.checkcollisions();
 
-	const Player&p = jessicaalba.getplayer(1);
-	const Player&p2 = jessicaalba.getplayer(2);
-	
+for (int i = 1; i <= numplayers; i++) {
+	const Player& player = jessicaalba.getplayer(i);
+	std::cout << "Player " << i << " Position: (" << player.position.x << ", " << player.position.y << ")\n";
+}
 
-	
-	std::cout << "Tick " << tickcount 
-		<< " | Player 1 position: (" 
-		<< p.position.x << ", " 
-		<< p.position.y << ")"<<std::endl;
-
-	std::cout << "Tick " << tickcount
-		<< " | Player 2 position: ("
-		<< p2.position.x << ", "
-		<< p2.position.y << ")" << std::endl;
 }

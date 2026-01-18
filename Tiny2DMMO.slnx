@@ -3,5 +3,8 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
   <Project Path="Tiny2DMMO.vcxproj" Id="99bdf3cc-e19a-4444-9f95-c15f8f22699d" />
 </Solution>
